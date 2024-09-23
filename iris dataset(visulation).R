@@ -1,4 +1,3 @@
-
 datasets::iris
 View(iris)
 str(iris)
@@ -11,7 +10,7 @@ normalize<-function(x){
 a1=as.data.frame(lapply(a[2:3L],normalize))
 summary(a$Sepal.Length)
 a_train=a1[1:120,]
-a_test=a1[122:150,]
+a_test=a1[121:150,]
 a_train_lables=a1[1:120,1]
 a_test_lables=a1[121:150,1]
 a_train_lables
