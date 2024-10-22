@@ -1,0 +1,45 @@
+getwd()
+d<-read.csv("C:/Users/asus/Downloads/sms_spam.csv",stringsAsFactors = FALSE)
+str(d)
+d$type<-factor(d$type)
+install.packages("tm")
+library(tm)
+d_corpus<-VCorpus(VectorScorce(d$type))
+print(d_corpus)
+as.character(d_corpus[[1]])
+lapply((list)d_corpus[1:2], as.character)
+d_data_clean<-tm_map(d_corpus,content_transformer(tolower))
+as.character(d_corpus[[1]])
+as.character(d_corpus_clean[[1]])
+d_corpus_clean<-tm_map(d_corpus_clean,removeNumbers)
+d_corpus_clean<-tm_map(d_corpus_clean,removeWords,stopwords())
+d_corpus_clean<-tm_map(d_corpus_clean,removePunctuation)
+install.packages("SnawballC")
+library(SnowballC)
+d_corpus_clean<-tm_map(d_corpus_clean,stemDocument)
+d_corpus_clean<-tm_map(d_corpus_clean,stripWhitespace)
+d_dtm<-DoucumentTermmatrix(d_corpus_clean)
+d_dtm_train<-d_dtm[1:4169,]
+d_dtm_test<-d_dtm[4170:5559,]
+d_train_labels<-data[1:4169,]$type
+d_test_labels<-data[4170:5559,]$type
+prop.table(table(d_train_labels))
+prop.table(table(d_test_labels))
+install.packages("wordcloud")
+library(wordcloud)
+wordcloud(d_corpus_clean,min.freq = 50,random.order = FALSE)
+d_freq_words<-findFreqTerms(d_dtm_train,5)
+str(d_freq_words)
+d_dtm_freq_train<-d_dtm_train[ ,d_freq_words]
+d_dtm_freq_test<-d_dtm_test{ ,d_freq_words}
+convert_counts<-function(x){
+  x<-ifelse(x>0,"Yes","No")
+}
+d_train<-apply(d_dtm_freq_train,MARGIN = 2,convert_counts)
+d_test<-apply(d_dtm_freq_test,MARGIN = 2, convert_counts)
+install.packages("e1071")
+library(e1071)
+d_classifier<-naiveBayes(d_train,d_train_labels)
+d_test_pred<-predict(d_classifier,d_test)
+library(gmodels)
+CrossTable(d_test_pred,d_test_labels,prop.chisq = FALSE,prop.t=FALSE,dnn=c('predicted','actual'))
