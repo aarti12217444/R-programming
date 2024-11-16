@@ -1,0 +1,15 @@
+installed.packages("arules")
+library(arules)
+getwd()
+setwd<-("C:/Users/asus/Downloads")
+Groceries<-read.transactions("groceries.csv",sep=",")
+inspect(Groceries[1:5])
+itemFrequency(Groceries[, 1: 3])
+itemFrequencyPlot(Groceries,support=0.1)
+itemFrequencyPlot(Groceries,topN=20)
+image(Groceries[1:3])
+image(sample(Groceries,100))
+apriori(Groceries)
+Groceries1<apriori(support= ,
+                   confidence = ,
+                   )
