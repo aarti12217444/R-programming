@@ -1,4 +1,5 @@
 getwd()
+setwd("C:/Users/asus/Downloads")
 concrete = read.csv("Concrete_Data.csv")
 View(concrete)
 str(concrete)
@@ -54,3 +55,4 @@ plot(concrete_model2)
 model_results2 <- compute(concrete_model2, concrete_test[1:8])
 predicted_strength2 <- model_results2$net.result
 cor(predicted_strength2, concrete_test$strength)
+
